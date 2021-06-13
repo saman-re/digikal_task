@@ -19,6 +19,8 @@ export default {
 };
 </script>
 <style lang="scss">
+@import "../assets/_variables.scss";
+
 input[type='checkbox'] {
   height: 0;
   width: 0;
@@ -49,7 +51,7 @@ label:after {
 }
 
 input:checked + label {
-  background: #bada55;
+  background: $primary;
 }
 
 input:checked + label:after {
@@ -58,6 +60,6 @@ input:checked + label:after {
 }
 
 label:active:after {
-  width: 130px;
+  width: 90px;
 }
 </style>
