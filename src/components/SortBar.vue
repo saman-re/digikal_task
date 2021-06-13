@@ -38,7 +38,9 @@ ul {
   border-color: $box-border-color;
   -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+
   .sort-option-guide {
+      margin-left: 3px;
     span {
       font-weight: 450;
       text-decoration: none;
@@ -71,6 +73,9 @@ ul {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
 
     &.active,
     &.active:hover {
