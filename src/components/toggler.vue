@@ -18,6 +18,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 @import '../assets/_variables.scss';
 
@@ -26,7 +27,6 @@ $toggle-height: 21px;
 $pin-size: 15px;
 $spacing: 4px;
 
-$border: 1px solid #8c8c8c;
 
 input {
   height: 0;
