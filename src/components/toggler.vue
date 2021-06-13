@@ -21,6 +21,12 @@ export default {
 <style lang="scss">
 @import "../assets/_variables.scss";
 
+$to-width:40px;
+$to-height:21px;
+$pin-size:15px;
+$spacing:4px;
+$border:1px solid #8c8c8c;
+
 input[type='checkbox'] {
   height: 0;
   width: 0;
@@ -30,36 +36,39 @@ input[type='checkbox'] {
 label {
   cursor: pointer;
   text-indent: -9999px;
-  width: 200px;
-  height: 100px;
-  background: grey;
+  width: $to-width;
+  height: $to-height;
+  background: $base-color;
   display: block;
-  border-radius: 100px;
+  border: $border;
+  border-radius: $to-height;
   position: relative;
 }
 
 label:after {
   content: '';
   position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 90px;
-  height: 90px;
+  top: $spacing/2;
+  right: $spacing/2;
+  width: $pin-size;
+  height: $pin-size;
   background: #fff;
-  border-radius: 90px;
+  border: $border;
+  border-radius: $pin-size;
   transition: 0.3s;
 }
 
 input:checked + label {
   background: $primary;
+  
 }
 
 input:checked + label:after {
-  left: calc(100% - 5px);
-  transform: translateX(-100%);
+  right: calc(100% - 2.5px);
+  transform: translateX(100%);
 }
 
 label:active:after {
-  width: 90px;
+  width: $pin-size;
 }
 </style>
