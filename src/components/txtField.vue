@@ -23,11 +23,11 @@
     background-color: $base-color;
     border: $box-border-color;
 
-    &:focus {
-      border: $box-border-color;
+    &:focus-visible {
+      outline: none;
     }
   }
-  
+
   .search-icon {
     position: absolute;
     right: 0px;
