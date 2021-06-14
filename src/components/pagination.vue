@@ -22,15 +22,20 @@
 <script>
 export default {
   props: ['totalPages'],
+
   data() {
-    this.pagesArray = [];
-    for (let i = 1; i <= this.totalPages && i <= this.totalPages; i++) {
-      this.pagesArray.push(i);
-    }
     return {
       currentPage: 1,
-      pagesArray: [1, 2, 3],
+      pagesArray: [1],
     };
+  },
+  watch: {
+    totalPages(newValue) {
+      this.pagesArray = [];
+      for (let i = 1; i <= 3 && i <= newValue; i++) {
+        this.pagesArray.push(i);
+      }
+    },
   },
   methods: {
     newPage(newPage) {
@@ -65,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/_variables.scss";
+@import '../assets/_variables.scss';
 
 .pagination {
   ul {
@@ -118,7 +123,7 @@ export default {
 
       &.dots {
         font-size: 22px;
-        cursor:default;
+        cursor: default;
       }
     }
   }
