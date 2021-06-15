@@ -195,7 +195,7 @@ export default {
 
 .price-unit {
   display: inline-block;
-  padding-right:6px;
+  padding-right: 6px;
   font-size: 22px;
   font-weight: 570;
   letter-spacing: 0.8px;
