@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     offCalc() {
-      console.log(this.selling, ' man: ', this.rrp);
       let offPercent = 100 - (this.selling / this.rrp) * 100;
       return Math.round(offPercent);
     },

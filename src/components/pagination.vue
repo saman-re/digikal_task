@@ -38,6 +38,11 @@ export default {
     },
   },
   methods: {
+    // toPersianDigits(item) {
+    //   let str = item.toString();
+    //   var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    //   return str.replace(/[0-9]/g, w => id[+w]);
+    // },
     newPage(newPage) {
       this.currentPage = newPage;
       this.$emit('getPage', this.currentPage);
@@ -64,6 +69,13 @@ export default {
           this.pagesArray.unshift(this.totalPages - i);
         }
       }
+      this.$router.push({
+        query:{
+          search:this.$route.query.search,
+          page:newPage,
+        },
+      }
+      )
     },
   },
 };
@@ -71,8 +83,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/_variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Lemonada:wght@400;500&display=swap');
 
 .pagination {
+  border: $border;
+  border-color: $box-border-color;
   ul {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -85,26 +100,32 @@ export default {
     -ms-flex-line-pack: center;
     align-content: center;
     background: #fff;
-    padding: 8px;
-    border-radius: 8px;
-    -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 0;
+    border-top: $border;
+    border-top-color: $box-border-color;
+    // border-radius: 8px;
+    // -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    // box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 
     li.numb {
       list-style: none;
       height: 45px;
-      width: 45px;
-      margin: 0 3px;
+      width: max-content;
+      padding: 0 12px;
+      margin: 0 5px;
       line-height: 45px;
+      font-size: 1.286rem;
       border-radius: 8px;
     }
 
     li {
-      color: $secondary;
+      color: darken($color: #535353, $amount: 10);
       list-style: none;
       line-height: 45px;
       text-align: center;
-      font-size: 18px;
+      font-family: 'Lemonada', cursive;
+      font-size: 10px;
       font-weight: 500;
       cursor: pointer;
       -webkit-user-select: none;
