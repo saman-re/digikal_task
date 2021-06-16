@@ -2,6 +2,7 @@
   <div class="right-inner-addon input-container">
     <i class="material-icons search-icon">search</i>
     <input class="search-input" type="text" placeholder="جستجو کنید" @keydown.enter="search" v-model="searchKey" />
+    <i class="material-icons clear-icon" v-show="searchKey" @click="searchKey=''">add_circle</i>
   </div>
 </template>
 
@@ -62,13 +63,24 @@ export default {
       outline: none;
     }
   }
+  .bar-icon{
+    position: absolute;
+    padding: 12px 12px;
+    color: darken($box-border-color, 40%);
+  }
 
   .search-icon {
+    @extend .bar-icon;
     position: absolute;
     right: 0px;
     padding: 12px 12px;
     pointer-events: none;
-    color: darken($box-border-color, 40%);
+  }
+  .clear-icon{
+    @extend .bar-icon;
+    left:0;
+    cursor: pointer;
+    transform: rotate(45deg);
   }
 }
 </style>
