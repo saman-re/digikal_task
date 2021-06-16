@@ -69,13 +69,14 @@ export default {
           this.pagesArray.unshift(this.totalPages - i);
         }
       }
-      this.$router.push({
-        query:{
-          search:this.$route.query.search,
-          page:newPage,
-        },
+      if (newPage != this.currentPage) {
+        this.$router.push({
+          query: {
+            search: this.$route.query.search,
+            page: newPage,
+          },
+        });
       }
-      )
     },
   },
 };
