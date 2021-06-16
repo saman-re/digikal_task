@@ -14,11 +14,11 @@
     <div class="price">
       <div v-if="product.status == 'marketable'">
         <div v-show="selling != rrp" class="rrp">
-          <span class="off-percent">%{{ toPersianDigits(offCalc()) }}</span>
-          <span class="rrp-price">{{ toPersianDigits(rrp) }}</span>
+          <span class="off-percent">%{{ product.status == 'marketable' ? toPersianDigits(offCalc()) : 1 }}</span>
+          <span class="rrp-price">{{ product.status == 'marketable' ? toPersianDigits(rrp) : 1 }}</span>
         </div>
         <div class="price-num">
-          <span>{{ toPersianDigits(selling) }}</span>
+          <span>{{ product.status == 'marketable' ? toPersianDigits(selling) : 1 }}</span>
           <div class="price-unit">تومان</div>
         </div>
       </div>
@@ -31,14 +31,11 @@
 
 <script>
 export default {
-  created() {
-    console.log(this.product);
-  },
   props: ['product'],
   data() {
     return {
-      rrp: this.product.price.rrp_price,
-      selling: this.product.price.selling_price,
+      rrp: parseInt(this.product.price.rrp_price),
+      selling: parseInt(this.product.price.selling_price),
     };
   },
   methods: {
@@ -72,14 +69,18 @@ export default {
   width: 100%;
   border: $border;
   border-color: $box-border-color;
-  padding: 10px 14px 45px;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 10px 14px 30px;
   background: #fff;
   z-index: 3;
   overflow: hidden;
 
   &:hover {
-    -webkit-box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.1);
-    box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.1);
+    -webkit-box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+    box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+    transition: box-shadow 0.3 ease-out;
     cursor: pointer;
     z-index: 11;
   }
@@ -90,8 +91,8 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    height: 200px;
-    margin-bottom: 13px;
+    height: 220px;
+    margin-bottom: 2px;
 
     img {
       height: 100%;
@@ -103,7 +104,7 @@ export default {
 }
 
 .product-details {
-  height: 90px;
+  height: 115px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -118,9 +119,10 @@ export default {
 }
 
 .product-name {
-  font-size: 1rem;
+  font-size: 0.93rem;
   font-weight: 550;
-  line-height: 22px;
+  line-height: 21px;
+  text-align: justify;
   color: #161616;
 }
 
@@ -201,7 +203,7 @@ export default {
 }
 
 .out-of-stock {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-bottom: 2px solid #969696;
   position: absolute;
   left: 17px;
@@ -216,7 +218,7 @@ export default {
   height: 15px;
   vertical-align: middle;
   padding: 0px 10px;
-  bottom: -12px;
+  bottom: -5px;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
