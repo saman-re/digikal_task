@@ -110,12 +110,12 @@ export default {
 
     li.numb {
       list-style: none;
-      height: 45px;
+      height: 40px;
       width: max-content;
       padding: 0 12px;
       margin: 0 5px;
-      line-height: 45px;
-      font-size: 1.286rem;
+      line-height: 40px;
+      font-size: 0.986rem;
       border-radius: 8px;
     }
 
