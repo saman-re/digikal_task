@@ -5,21 +5,21 @@
   </div>
 </template>
 <script>
+import { searchWatcher } from '../main';
 export default {
   data() {
     return {
-      toggleMode: true,
+      toggleMode: false,
     };
   },
   methods: {
     toggle() {
-      this.$emit('toggle', this.toggleMode);
+      searchWatcher.$emit('toggle', this.toggleMode);
     },
   },
 };
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../assets/_variables.scss';
 
 $toggle-width: 40px;
@@ -27,7 +27,10 @@ $toggle-height: 21px;
 $pin-size: 15px;
 $spacing: 4px;
 
-
+.toggler {
+  display: flex;
+  align-items: center;
+}
 input {
   height: 0;
   width: 0;
