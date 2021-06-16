@@ -1,19 +1,19 @@
 <template>
   <div class="middle">
     <div class="multi-range-slider">
-      <input type="range" id="input-left" :min="left_min" :max="left_max" v-model="leftValue" @input="setLeftValue" />
-      <input type="range" id="input-right" :min="right_min" :max="right_max" v-model="rightValue" @input="setRightValue" />
-      setLeftValue
+      <input type="range" id="input-left" :min="Min" :max="Max" v-model="leftValue" @input="setLeftValue" />
+      <input type="range" id="input-right" :min="Min" :max="Max" v-model="rightValue" @input="setRightValue" />
       <div class="slider">
         <div class="track"></div>
         <div class="range" :style="`left:${thumbLeft_percent}%;right:${thumbRight_percent}%`"></div>
-        <div class="thumb left" :style="`left:${thumbLeft_percent}%`"></div>
-        <div class="thumb right" :style="`right:${thumbRight_percent}%`"></div>
+        <div class="thumb left" :style="`left:${thumbLeft_percent}%`">
+          <i class="material-icons">chevron_right</i>
+        </div>
+        <div class="thumb right" :style="`right:${thumbRight_percent}%`">
+          <i class="material-icons">chevron_left</i>
+        </div>
       </div>
     </div>
-    <!-- <p>value -min -max-thumbP</p> -->
-    <p>LV:{{ leftValue }},,Mi{{ left_min }},,Ma:{{ left_max }},,LP{{ thumbLeft_percent }}</p>
-    <p>RV:{{ rightValue }},,Mi:{{ right_min }},,Ma:{{ right_max }},,RP:{{ thumbRight_percent }}</p>
   </div>
 </template>
 
@@ -25,51 +25,56 @@ export default {
   },
   data() {
     return {
-      leftValue: 25,
-      left_min: 0,
-      left_max: 100,
+      leftValue: 0,
+      rightValue: 100000,
       thumbLeft_percent: 0,
-      rightValue: 75,
-      right_min: 0,
-      right_max: 100,
       thumbRight_percent: 0,
+      Min: 0,
+      Max: 100000,
     };
   },
   methods: {
     setLeftValue() {
-      let min = parseInt(this.left_min),
-        max = parseInt(this.left_max);
+      let min = parseInt(this.Min),
+        max = parseInt(this.Max);
 
-      this.leftValue = Math.min(this.leftValue, this.rightValue - 1);
+      this.leftValue = Math.min(this.leftValue, this.rightValue);
 
       let percent = ((this.leftValue - min) / (max - min)) * 100;
       this.thumbLeft_percent = parseInt(percent);
+      this.$emit("getBounds",[this.leftValue,this.rightValue]);
     },
     setRightValue() {
-      let min = this.right_min,
-        max = this.right_max;
+      let min = this.Min,
+        max = this.Max;
 
-      this.rightValue = Math.max(this.rightValue, this.leftValue + 1);
+      this.rightValue = Math.max(this.rightValue, this.leftValue);
 
       let percent = ((this.rightValue - min) / (max - min)) * 100;
       this.thumbRight_percent = 100 - parseInt(percent);
+      this.$emit("getBounds",[this.leftValue,this.rightValue]);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/_variables.scss';
+
 .middle {
   position: relative;
-  width: 50%;
+  width: 70%;
   max-width: 500px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .slider {
   position: relative;
   z-index: 1;
-  height: 10px;
-  margin: 0 15px;
+  height: 2px;
+  transform: rotate(180deg);
 }
 .slider > .track {
   position: absolute;
@@ -79,60 +84,51 @@ export default {
   top: 0;
   bottom: 0;
   border-radius: 5px;
-  background-color: #c6aee7;
+  background-color: darken($box-border-color, $amount: 10);
 }
 .slider > .range {
   position: absolute;
   z-index: 2;
-  left: 25%;
-  right: 25%;
-  top: 0;
-  bottom: 0;
+  height: 100%;
   border-radius: 5px;
-  background-color: #6200ee;
+  background-color: $secondary;
 }
 .slider > .thumb {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 3;
-  width: 30px;
-  height: 30px;
-  background-color: #6200ee;
+  width: 34px;
+  height: 34px;
+  background-color: $box-border-color;
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(98, 0, 238, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
 }
 .slider > .thumb.left {
-  left: 25%;
-  transform: translate(-15px, -10px);
+  transform: translate(-15px, -15px);
 }
 .slider > .thumb.right {
-  right: 25%;
-  transform: translate(15px, -10px);
+  transform: translate(15px, -15px);
 }
 
 input[type='range'] {
   position: absolute;
   pointer-events: none;
-  //   -webkit-appearance: none;
+  -webkit-appearance: none;
   z-index: 2;
-  height: 10px;
-  width: 100%;
-  //   opacity: 0;
+  height: 0px;
+  width: calc(100% + 17px);
+  transform: translateX(10px);
+  opacity: 0;
 }
 input[type='range']::-webkit-slider-thumb {
   pointer-events: all;
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   border-radius: 0;
   border: 0 none;
-  background-color: red;
+  // background-color: red;
   -webkit-appearance: none;
-}
-#input-right {
-  background-color: blue;
-  top: 65px;
-}
-#input-left {
-  top: 100px;
 }
 </style>
