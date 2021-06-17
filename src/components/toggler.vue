@@ -7,6 +7,12 @@
 <script>
 import { searchWatcher } from '../main';
 export default {
+  created(){
+    searchWatcher.$emit('getToggleMode');
+    searchWatcher.$on('setDefaultToggle',(mode)=>{
+      this.toggleMode=mode;
+    });
+  },
   data() {
     return {
       toggleMode: false,

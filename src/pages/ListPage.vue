@@ -1,56 +1,68 @@
 <template>
-  <div>
+  <div class="main-container">
     <loader v-if="loader"></loader>
-    <div class="sort-box">
-    <price-range style="margin-top:40px" @setRange="setPrice($event)"/>
-    <toggle-box/>    
+    <dialog-box v-show="dialog.show" @close="dialog.show = $event" :slotName="dialog.slot">
+      <div slot="range">
+        <price-range-box @setRange="setPrice($event)" class="dialog-price-range" />
+        <toggle-box class="dialog-toggle" />
+      </div>
+      <multi-select slot="select"></multi-select>
+    </dialog-box>
+    <div class="sort-box" style="margin-top: 40px; margin-bottom: 40px">
+      <price-range-box @setRange="setPrice($event)" />
+      <toggle-box />
     </div>
-    <product-box :products="products" :totalPages="totalPage"/>
-    <!-- <div class="product-box">
-      <sort-bar class="product-sortbar" @sortOption="params.sortCode = $event" />
-      <product-card v-for="(product, index) in products" :key="index" :product="product"></product-card>
-      <pagination class="product-pagination" @getPage="params.currentPage = $event" :totalPages="totalPage"></pagination>
-    </div> -->
+    <product-box class="product-box" :products="products" :totalPages="totalPage" style="margin-top: 40px; margin-bottom: 40px" />
   </div>
 </template>
 
-
-
 <script>
-import productBox from "../components/productBox.vue";
-// import productCard from '../components/ProductCard.vue';
-import ToggleBox from '@/components/toggle-box';
-// import SortBar from '../components/SortBar.vue';
-// import Pagination from '../components/pagination.vue';
 import Loader from '@/components/Loader.vue';
-import priceRange from "@/components/priceRange.vue";
+import ToggleBox from '@/components/toggle-box';
+import PriceRangeBox from '@/components/priceRange-box.vue';
+import ProductBox from '@/components/product-box.vue';
+import DialogBox from '@/components/dialog-box.vue';
+import multiSelect from '../components/multiSelect.vue';
 
-import { searchWatcher } from '../main';
-import Axios from '../api/axios_config';
-import PriceRange from '../components/priceRange.vue';
+import { searchWatcher } from '@/main';
+import Axios from '@/api/axios_config';
 
 export default {
-  async created() {
+  created() {
+    searchWatcher.$on('getSortCode', () => {
+      searchWatcher.$emit('getDefault', this.params.sortCode);
+    });
+    searchWatcher.$on('getToggleMode',()=>{
+      searchWatcher.$emit('setDefaultToggle',this.params.sellingStock);
+    })
+    searchWatcher.$on('setSlot', slotName => {
+      this.dialog.slot = slotName;
+      this.dialog.show = true;
+    });
     searchWatcher.$on('re-search', () => {
-      // this.params.query = searchKey;
       this.fetchData();
     });
-    searchWatcher.$on('toggle', (sellingStock)=>{
-      this.params.hasSellingStock=sellingStock;
+    searchWatcher.$on('toggle', sellingStock => {
+      this.params.hasSellingStock = sellingStock;
     });
-    searchWatcher.$on('sortOption',(sortCod) =>{
+    searchWatcher.$on('sortOption', sortCod => {
       this.params.sortCode = sortCod;
-    })
+    });
     if (this.$route.query.search) {
       this.params.query = this.$route.query.search;
     }
+    if (this.$route.query.page) {
+      this.params.currentPage = this.$route.query.page;
+    }
     this.fetchData();
-    // let data = await Axios.get('search/?page=2&rows=25&price[min]=0&price[max]=100000&has_selling_stock=1&sort=4');
-    // console.log('this:', data);
   },
 
   data() {
     return {
+      dialog: {
+        slot: '',
+        show: false,
+      },
       loader: false,
       products: [],
       totalPage: 1,
@@ -66,26 +78,40 @@ export default {
   },
   watch: {
     '$route.query'(newRoute) {
+      this.params.currentPage = this.$route.query.page;
       if (newRoute.search) {
         this.params.query = this.$route.query.search;
       }
       this.fetchData();
     },
     'params.sortCode'() {
+      setTimeout(() => {
+        this.dialog.show = false;
+      }, 500);
+      searchWatcher.$emit('getDefault', this.params.sortCode);
       this.fetchData();
     },
     'params.hasSellingStock'() {
+      setTimeout(() => {
+        this.dialog.show = false;
+      }, 500);
       this.fetchData();
     },
     'params.currentPage'() {
       this.fetchData();
     },
-    'params.minPrice'(){
+    'params.minPrice'() {
+      setTimeout(() => {
+        this.dialog.show = false;
+      }, 500);
       this.fetchData();
     },
-    'params.maxPrice'(){
+    'params.maxPrice'() {
+      setTimeout(() => {
+        this.dialog.show = false;
+      }, 500);
       this.fetchData();
-    }
+    },
   },
   methods: {
     setPrice(key) {
@@ -97,12 +123,10 @@ export default {
       let params = {
         page: this.params.currentPage,
         rows: 21,
+        sort:this.params.sortCode,
         'price[min]': this.params.minPrice,
         'price[max]': this.params.maxPrice,
       };
-      if (this.params.sortCode !== 1 && this.params.sortCode !== 2) {
-        params.sort = this.params.sortCode;
-      }
       if (this.params.query) {
         params.q = this.params.query;
       }
@@ -117,59 +141,43 @@ export default {
       data = data.data.data;
       this.products = data.products;
       this.totalPage = data.pager.total_pages;
-      if (this.params.sortCode === 1) {
-        this.products = this.products.sort((a, b) => {
-          return a.price.selling_price - b.price.selling_price;
-        });
-      } else if (this.params.sortCode === 2) {
-        this.products = this.products.sort((a, b) => {
-          return b.price.selling_price - a.price.selling_price;
-        });
-      }
     },
   },
   components: {
-    ToggleBox,
-    // SortBar,
-    // Pagination,
     Loader,
-    // productCard,
-    priceRange,
-    PriceRange,
-    productBox
+    ToggleBox,
+    PriceRangeBox,
+    ProductBox,
+    DialogBox,
+    multiSelect,
   },
 };
-
-//     axios.get('https://www.digikala.com/front-end/search/?page=2&rows=25&price[min]=0&price[max]=100000&has_selling_stock=1&sort=4&q=سیب',{
-//         headers:{
-//             token: 'mpfKW9ghVTCSuBZ7qTkSmEyvL38ShZxv',
-//         }
-//     }).then(
-//         res=>{
-//             console.log("this",res);
-//         }
-//     ).catch(err=>{
-//         console.log("this:",err);
-//     })
 </script>
 
 <style lang="scss" scoped>
-// @import '../assets/_variables.scss';
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0 8px;
 
-// .product-box {
-//   width: max-content;
-//   display: grid;
-//   grid-template-columns: auto auto auto;
-//   grid-gap: 0;
-//   margin: 20px 30px;
-//   -webkit-box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.07);
-//   box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.07);
+  @media (max-width: 1050px) {
+    flex-direction: column;
+    align-items: center;
+  }
 
-//   .product-sortbar {
-//     grid-column: 1 / span 3;
-//   }
-//   .product-pagination {
-//     grid-column: span 3;
-//   }
-// }
+  .sort-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 0px 12px;
+    @media (max-width: 1050px) {
+      display: none;
+    }
+  }
+}
 </style>

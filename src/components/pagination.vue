@@ -22,7 +22,11 @@
 <script>
 export default {
   props: ['totalPages'],
-
+  created(){
+    if(this.$route.query.page){
+    this.currentPage = this.$route.query.page;
+    }
+  },
   data() {
     return {
       currentPage: 1,
@@ -44,6 +48,7 @@ export default {
     //   return str.replace(/[0-9]/g, w => id[+w]);
     // },
     newPage(newPage) {
+      let lastPage = this.currentPage;
       this.currentPage = newPage;
       this.$emit('getPage', this.currentPage);
       let index = this.pagesArray.indexOf(newPage);
@@ -69,7 +74,7 @@ export default {
           this.pagesArray.unshift(this.totalPages - i);
         }
       }
-      if (newPage != this.currentPage) {
+      if (newPage != lastPage) {
         this.$router.push({
           query: {
             search: this.$route.query.search,

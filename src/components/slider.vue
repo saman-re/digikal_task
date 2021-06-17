@@ -42,7 +42,7 @@ export default {
 
       let percent = ((this.leftValue - min) / (max - min)) * 100;
       this.thumbLeft_percent = parseInt(percent);
-      this.$emit("getBounds",[this.leftValue,this.rightValue]);
+      this.$emit('getBounds', [this.leftValue, this.rightValue]);
     },
     setRightValue() {
       let min = this.Min,
@@ -52,7 +52,7 @@ export default {
 
       let percent = ((this.rightValue - min) / (max - min)) * 100;
       this.thumbRight_percent = 100 - parseInt(percent);
-      this.$emit("getBounds",[this.leftValue,this.rightValue]);
+      this.$emit('getBounds', [this.leftValue, this.rightValue]);
     },
   },
 };
@@ -103,7 +103,7 @@ export default {
   height: 34px;
   background-color: $box-border-color;
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(98, 0, 238, 0.1);
+  box-shadow: -2px 0px 6px 0 rgba($color: #000000, $alpha: 0.16);
 }
 .slider > .thumb.left {
   transform: translate(-15px, -15px);

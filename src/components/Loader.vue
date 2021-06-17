@@ -13,6 +13,7 @@
   background: rgba(32, 32, 32, 0.446);
   width: 100%;
   height: 100%;
+  bottom: 0;
 
   .loader-p {
     border: 0 solid transparent;

@@ -28,15 +28,30 @@ export default {
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 0;
-  margin: 20px 30px;
+  // margin: 20px 30px;
   -webkit-box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.07);
   box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.07);
 
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-bar {
+    grid-column: span 3;
+    @media (max-width: 768px) {
+      flex-direction: row;
+      max-width: calc(100vw - 15px);
+      box-sizing: border-box;
+      align-self: stretch;
+    }
+  }
+
   .product-sortbar {
-    grid-column: 1 / span 3;
+    @extend .product-bar;
   }
   .product-pagination {
-    grid-column: span 3;
+    @extend .product-bar;
   }
 }
 </style>

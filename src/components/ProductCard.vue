@@ -1,29 +1,31 @@
 <template>
   <div class="product-card">
     <div class="main-images">
-      <img id="blue" class="blue" :src="product.images.main" alt="blue" />
+      <img :src="product.images.main" :alt="product.title" />
     </div>
     <div class="product-details">
-      <span class="product-name">{{ product.title }}</span>
-      <div class="stars">
-        <span class="count">({{ toPersianDigits(product.rating.count) }})</span>
-        <span class="rating">{{ toPersianDigits(product.rating.rate) }}</span>
-        <i class="material-icons">star_rate</i>
-      </div>
-    </div>
-    <div class="price">
-      <div v-if="product.status == 'marketable'">
-        <div v-show="selling != rrp" class="rrp">
-          <span class="off-percent">%{{ product.status == 'marketable' ? toPersianDigits(offCalc()) : 1 }}</span>
-          <span class="rrp-price">{{ product.status == 'marketable' ? toPersianDigits(rrp) : 1 }}</span>
-        </div>
-        <div class="price-num">
-          <span>{{ product.status == 'marketable' ? toPersianDigits(selling) : 1 }}</span>
-          <div class="price-unit">تومان</div>
+      <div class="product-info">
+        <span class="product-name">{{ product.title }}</span>
+        <div class="stars">
+          <span class="count">({{ toPersianDigits(product.rating.count) }})</span>
+          <span class="rating">{{ toPersianDigits(product.rating.rate) }}</span>
+          <i class="material-icons">star_rate</i>
         </div>
       </div>
-      <div v-else class="out-of-stock">
-        <div class="out-of-stock_text">نا مو جود</div>
+      <div class="price">
+        <div v-if="product.status == 'marketable'">
+          <div v-show="selling != rrp" class="rrp">
+            <span class="off-percent">%{{ product.status == 'marketable' ? toPersianDigits(offCalc()) : 1 }}</span>
+            <span class="rrp-price">{{ product.status == 'marketable' ? piriceDivider(rrp) : 1 }}</span>
+          </div>
+          <div class="price-num">
+            <span>{{ product.status == 'marketable' ? piriceDivider(selling) : 1 }}</span>
+            <div class="price-unit">تومان</div>
+          </div>
+        </div>
+        <div v-else class="out-of-stock">
+          <div class="out-of-stock_text">نا مو جود</div>
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +49,10 @@ export default {
       let str = item.toString();
       var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
       return str.replace(/[0-9]/g, w => id[+w]);
+    },
+    piriceDivider(price) {
+      price = price.toLocaleString();
+      return this.toPersianDigits(price);
     },
   },
 };
@@ -77,6 +83,29 @@ export default {
   z-index: 3;
   overflow: hidden;
 
+  @media (min-width: 1200px) {
+    max-width: 250px;
+  }
+  @media (max-width: 768px) {
+    flex-direction: row;
+    // align-items: space;
+    max-width: calc(100vw - 15px);
+    box-sizing: border-box;
+    align-self: stretch;
+    padding: 10px 4px 20px;
+  }
+  .product-details {
+    @media (max-width: 768px) {
+      position: absolute;
+      left: 10px;
+      right: 210px;
+    }
+    @media (max-width: 576px) {
+      right: 164px;
+      font-size: 0.87rem;
+      font-weight: 500;
+    }
+  }
   &:hover {
     -webkit-box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
     box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
@@ -94,16 +123,31 @@ export default {
     height: 220px;
     margin-bottom: 2px;
 
+    @media (max-width: 768px) {
+      height: 170px;
+      width: 200px;
+    }
+    @media (max-width: 576px) {
+      width: 160px;
+    }
+
     img {
       height: 100%;
       width: 100%;
-      -o-object-fit: cover;
-      object-fit: cover;
+      -o-object-fit: contain;
+      object-fit: contain;
+
+      @media (max-width: 768px) {
+        width: 200px;
+      }
+      @media (max-width: 576px) {
+        width: 150px;
+      }
     }
   }
 }
 
-.product-details {
+.product-info {
   height: 115px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -124,6 +168,11 @@ export default {
   line-height: 21px;
   text-align: justify;
   color: #161616;
+  @media (max-width: 576px) {
+    right: 164px;
+    font-size: 0.87rem;
+    font-weight: 500;
+  }
 }
 
 .stars {
@@ -163,6 +212,14 @@ export default {
   align-items: center;
   margin-top: 20px;
 
+  @media (max-width: 768px) {
+    justify-content: space-evenly;
+    margin-top: 5px;
+  }
+  @media (max-width: 576px) {
+    right: 7px;
+  }
+
   div {
     line-height: 26px;
   }
@@ -176,6 +233,13 @@ export default {
     font-size: 0.9rem;
     font-weight: 600;
     color: rgba(255, 244, 244, 0.967);
+
+    @media (max-width: 768px) {
+      font-weight: 500;
+    }
+    @media (max-width: 576px) {
+      font-size: 22px;
+    }
   }
   .rrp-price {
     padding: 0 5px;
@@ -192,6 +256,10 @@ export default {
   font-weight: 650;
   letter-spacing: 1.2px;
   color: #434242;
+
+  @media (max-width: 768px) {
+    font-weight: 500;
+  }
 }
 
 .price-unit {
@@ -209,6 +277,14 @@ export default {
   left: 17px;
   right: 17px;
   text-align: center;
+  @media (max-width: 768px) {
+      left: 90px;
+      margin:-30px;
+    }
+    @media (max-width: 576px) {
+      right:20px;
+      left:90px;
+    }
 }
 
 .out-of-stock_text {
@@ -225,5 +301,15 @@ export default {
   font-family: 'Lemonada', cursive;
   font-size: 17px;
   color: #969696;
+
+  @media (max-width: 768px) {
+      font-size: 15px;
+    }
+
+  @media (max-width: 576px) {
+      margin:0 -22px;
+      padding: 1px 8px;
+      font-size: 14px;
+    }
 }
 </style>
