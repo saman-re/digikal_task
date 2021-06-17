@@ -1,10 +1,10 @@
 <template>
   <div class="sort-option-items">
-    <div class="sort-option-guide filter">
-      <i class="material-icons">filter_alt</i>
-      <span>فیلتر:</span>
+    <div class="filter" @click="dialogActivate('range')">
+      <i class="material-icons">tune</i>
+      <span>جستجوی پیشرفته:</span>
     </div>
-    <div class="sort-option-guide filter">
+    <div class="filter" @click="dialogActivate('select')">
       <i class="material-icons">sort</i>
       <span>مرتب سازی بر اساس:</span>
     </div>
@@ -25,6 +25,12 @@
 <script>
 import { searchWatcher } from '../main';
 export default {
+  created(){
+    searchWatcher.$emit("getSortCode")
+    searchWatcher.$on("getDefault",(code)=>{
+      this.sortOption = code;
+    })
+  },
   data() {
     return {
       sortOption: 4,
@@ -42,14 +48,6 @@ export default {
           text: 'پرفروش ترین',
           code: 27,
         },
-        {
-          text: 'ارزانترین',
-          code: 1,
-        },
-        {
-          text: 'گرانترین',
-          code: 2,
-        },
       ],
     };
   },
@@ -58,6 +56,9 @@ export default {
       this.sortOption = code;
       searchWatcher.$emit('sortOption', code);
     },
+    dialogActivate(slotName){
+      searchWatcher.$emit('setSlot',slotName)
+    }
   },
 };
 </script>
@@ -80,41 +81,15 @@ export default {
   background: #fff;
   border: $border;
   border-color: $box-border-color;
-  //   -webkit-box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-  //   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 }
-.sort{
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin-left: 3px;
-  @media (max-width: 768px) {
-    background-color: $base-color;
-    padding: 0 5px;
-    border-radius: 8px;
-    &:hover {
-      color: #fff;
-      background-color: rgba($color: #000000, $alpha: 0.8);
-    }
-  }
-
+.sort {
   span {
-    padding: 0 5px;
     position: relative;
-    font-size: 0.95rem;
     font-weight: 450;
-    // font-weight: 200;
     line-height: 30px;
     vertical-align: middle;
     border-radius: 8px;
     white-space: nowrap;
-    @media (max-width: 768px) {
-      font-size: 0.8rem;
-      padding: 0;
-    }
   }
   i {
     @extend span;
@@ -122,12 +97,10 @@ export default {
     margin-left: 0px;
     padding: 0 2px;
     color: #848992e3;
-    @media (max-width: 768px) {
-      font-size: 22px;
-    }
   }
 }
 .sort-option-guide {
+  @extend .sort;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -135,45 +108,42 @@ export default {
   -ms-flex-pack: center;
   justify-content: center;
   margin-left: 3px;
-  @media (max-width: 768px) {
-    background-color: $base-color;
-    padding: 0 5px;
-    border-radius: 8px;
-    &:hover {
-      color: #fff;
-      background-color: rgba($color: #000000, $alpha: 0.8);
-    }
+  @media (max-width: 1050px) {
+    display: none;
   }
-
   span {
     padding: 0 5px;
-    position: relative;
     font-size: 0.95rem;
-    font-weight: 450;
-    // font-weight: 200;
-    line-height: 30px;
-    vertical-align: middle;
-    border-radius: 8px;
-    white-space: nowrap;
-    @media (max-width: 768px) {
-      font-size: 0.8rem;
-      padding: 0;
-    }
-  }
-  i {
-    @extend span;
-    font-size: 24px;
-    margin-left: 0px;
-    padding: 0 2px;
-    color: #848992e3;
-    @media (max-width: 768px) {
-      font-size: 22px;
-    }
   }
 }
 .filter {
-  display:none;
-
+  @extend .sort;
+  display: none;
+  background-color: $base-color;
+  padding: 0 10px;
+  margin: 0px 20px 0px -5px;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+    background-color: rgba($color: #000000, $alpha: 0.8);
+  }
+  span {
+    font-size: 0.8rem;
+    padding: 0;
+  }
+  i {
+    font-size: 22px;
+  }
+  // @media (max-width: 768px) {
+  @media (max-width: 1050px) {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
 }
 
 ul {
@@ -196,6 +166,10 @@ ul {
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 1050px) {
+    visibility: hidden;
   }
 
   li {
