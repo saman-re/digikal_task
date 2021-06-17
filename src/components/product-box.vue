@@ -1,7 +1,7 @@
 <template>
   <div class="product-box">
     <sort-bar class="product-sortbar" />
-    <product-card v-for="(product, index) in products" :key="index" :product="product"></product-card>
+    <product-card v-for="(product, index) in products" :key="index" :product="product" @click="send(product)"></product-card>
     <pagination class="product-pagination" :totalPages="totalPages"></pagination>
   </div>
 </template>
@@ -12,6 +12,12 @@ import SortBar from './SortBar.vue';
 import Pagination from './pagination.vue';
 export default {
   props: ['products', 'totalPages'],
+  methods:{
+    send(product){
+      console.log(product);
+      this.$router.push(`/details/`)
+    }
+  },
   components: {
     productCard,
     SortBar,
