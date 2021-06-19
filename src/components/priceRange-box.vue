@@ -2,7 +2,7 @@
   <div class="price-range">
     <div class="title">محدوده قیمت</div>
     <div class="slider-box">
-      <slider @getBounds="setPrice($event)" />
+      <slider />
     </div>
     <div class="bounds">
       <div class="upper-bound">
@@ -37,23 +37,34 @@
 import slider from './slider.vue';
 
 export default {
-  data() {
-    return {
-      minPrice: 0,
-      maxPrice: 0,
-      lastMin: 0,
-      lastMax: 100000,
-    };
+  computed: {
+    minPrice(){
+        return this.$store.state.tempMinPrice;
+      },
+    maxPrice(){
+        return this.$store.state.tempMaxPrice;
+      },
+    lastMin: {
+      get() {
+        return this.$store.getters.getParams['price[min]'];
+      },
+      set(value) {
+        this.$store.commit('setPriceMin',value)
+      },
+    },
+    lastMax: {
+      get() {
+        return this.$store.getters.getParams['price[max]'];
+      },
+      set(value) {
+        this.$store.commit('setPriceMax',value)
+      },
+    },
   },
   methods: {
-    setPrice(key) {
-      this.minPrice = key[0];
-      this.maxPrice = key[1];
-    },
     setRange() {
       this.lastMin = this.minPrice;
       this.lastMax = this.maxPrice;
-      this.$emit('setRange', [this.minPrice, this.maxPrice]);
     },
     toPersianDigits(item) {
       let str = item.toString();

@@ -25,13 +25,29 @@ export default {
   },
   data() {
     return {
-      leftValue: 0,
-      rightValue: 100000,
       thumbLeft_percent: 0,
       thumbRight_percent: 0,
       Min: 0,
       Max: 100000,
     };
+  },
+  computed: {
+    rightValue: {
+      get() {
+        return this.$store.state.tempMaxPrice;
+      },
+      set(value) {
+        this.$store.commit('setTempMax',value);
+      }
+    },
+    leftValue:{
+      get(){
+        return this.$store.state.tempMinPrice;
+      },
+      set(value){
+        this.$store.commit('setTempMin',value);
+      }
+    }
   },
   methods: {
     setLeftValue() {
@@ -42,7 +58,7 @@ export default {
 
       let percent = ((this.leftValue - min) / (max - min)) * 100;
       this.thumbLeft_percent = parseInt(percent);
-      this.$emit('getBounds', [this.leftValue, this.rightValue]);
+      // this.$emit('getBounds', [this.leftValue, this.rightValue]);
     },
     setRightValue() {
       let min = this.Min,
@@ -52,7 +68,7 @@ export default {
 
       let percent = ((this.rightValue - min) / (max - min)) * 100;
       this.thumbRight_percent = 100 - parseInt(percent);
-      this.$emit('getBounds', [this.leftValue, this.rightValue]);
+      // this.$emit('getBounds', [this.leftValue, this.rightValue]);
     },
   },
 };
