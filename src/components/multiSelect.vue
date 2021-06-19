@@ -4,7 +4,7 @@
       <i class="material-icons">sort</i>
       <span>مرتب سازی بر اساس</span>
     </div>
-    <label class="radio-label" style="direction:rtl" v-for="option in sortOptions" :key="option.code">
+    <label class="radio-label" style="direction: rtl" v-for="option in sortOptions" :key="option.code">
       <input type="radio" class="radio" checked="checked" :value="option.code" v-model="sortOption" @input="sortActive(option.code)" />
       <span>{{ option.text }}</span>
     </label>
@@ -12,17 +12,9 @@
 </template>
 
 <script>
-import { searchWatcher } from '../main';
 export default {
-  created(){
-    searchWatcher.$emit("getSortCode")
-    searchWatcher.$on("getDefault",(code)=>{
-      this.sortOption = code;
-    })
-  },
   data() {
     return {
-      sortOption: 4,
       sortOptions: [
         //4: the most views ,22: the most relevant,27: customers recommendation
         {
@@ -40,10 +32,19 @@ export default {
       ],
     };
   },
+  computed: {
+    sortOption: {
+      get() {
+        return this.$store.getters.getParams.sort;
+      },
+      set(code) {
+        this.$store.commit('setSortCode', code);
+      },
+    },
+  },
   methods: {
     sortActive(code) {
       this.sortOption = code;
-      searchWatcher.$emit('sortOption', code);
     },
   },
 };
@@ -55,20 +56,20 @@ export default {
 .radio-container {
   display: flex;
   flex-direction: column;
-  justify-content:flex-start;
+  justify-content: flex-start;
   background-color: #fff;
   border-radius: 20px;
   color: lighten($color: #000000, $amount: 30);
   padding: 25px 32px;
   margin-bottom: 110px;
 
-  .radio-title{
+  .radio-title {
     display: flex;
     align-items: center;
     text-align: center;
     padding-bottom: 20px;
     border-bottom: $border;
-    span{
+    span {
       font-size: 20px;
       font-weight: 600;
     }
@@ -85,7 +86,7 @@ export default {
 .radio-label {
   padding: 10px 10px;
   padding-bottom: 20px;
-  padding-left:100px;
+  padding-left: 100px;
   cursor: pointer;
   input {
     display: none;

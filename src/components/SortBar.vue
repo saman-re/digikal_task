@@ -26,14 +26,13 @@
 import { searchWatcher } from '../main';
 export default {
   created(){
-    searchWatcher.$emit("getSortCode")
-    searchWatcher.$on("getDefault",(code)=>{
-      this.sortOption = code;
-    })
+    // searchWatcher.$emit("getSortCode")
+    // searchWatcher.$on("getDefault",(code)=>{
+    //   this.sortOption = code;
+    // })
   },
   data() {
     return {
-      sortOption: 4,
       sortOptions: [
         //4: the most views ,22: the most relevant,27: customers recommendation
         {
@@ -51,10 +50,20 @@ export default {
       ],
     };
   },
+  computed:{
+    sortOption:{
+      get(){
+        return this.$store.getters.getParams.sort;
+      },
+      set(code){
+        this.$store.commit('setSortCode',code)
+      }
+    }
+  },
   methods: {
     sortActive(code) {
       this.sortOption = code;
-      searchWatcher.$emit('sortOption', code);
+      // searchWatcher.$emit('sortOption', code);
     },
     dialogActivate(slotName){
       searchWatcher.$emit('setSlot',slotName)
