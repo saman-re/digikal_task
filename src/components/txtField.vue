@@ -7,33 +7,33 @@
 </template>
 
 <script>
-import { searchWatcher } from '../main';
+// import { searchWatcher } from '../main';
 
 export default {
-  created(){
-    if(this.$route.query.search){
-      this.searchKey=this.$route.query.search;
+  computed:{
+    searchKey:{
+      get(){
+        return this.$store.state.query;
+      },
+      set(key){
+        this.$store.commit("setSearchQuery",key);
+      }
     }
-  },
-  data() {
-    return {
-      searchKey: '',
-    };
   },
   methods: {
     search() {
       if (this.searchKey != '') {
-        if (this.$route.query.search !== this.searchKey) {
-          this.$router.push({
-            name: 'home_page',
-            query: {
-              search: this.searchKey,
-              page:this.$route.query.page,
-            },
-          });
-        }else{
-          searchWatcher.$emit('re-search', "");
-        }
+        // if (this.$route.query.search !== this.searchKey) {
+        //   this.$router.push({
+        //     name: 'home_page',
+        //     query: {
+        //       search: this.searchKey,
+        //       page:this.$route.query.page,
+        //     },
+        //   });
+        // }else{
+        //   searchWatcher.$emit('re-search', "");
+        // }
       }
     },
   },

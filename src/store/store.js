@@ -12,11 +12,11 @@ export const store = new Vuex.Store({
       rows: 21,
       'price[min]': 0,
       'price[max]': 100000,
-      query: '',
     },
-    totalPages:10,
-    tempMinPrice:0,
-    tempMaxPrice:100000
+    query: '',
+    totalPages: 10,
+    tempMinPrice: 0,
+    tempMaxPrice: 100000,
   },
   getters: {
     getParams: state => {
@@ -25,26 +25,34 @@ export const store = new Vuex.Store({
   },
   mutations: {
     toggle: (state, payload) => {
-      state.params.has_selling_stock = payload;
+      if (payload) {
+        state.params.has_selling_stock = 1;
+      }else{
+        state.params.has_selling_stock = 0;
+      }
     },
     changePage: (state, newPage) => {
-      state.params.page =newPage;
+      state.params.page = newPage;
     },
-    setTempMin:(state,value) =>{
-        state.tempMinPrice=value;
+    setTempMin: (state, value) => {
+      state.tempMinPrice = value;
     },
-    setTempMax:(state,value) =>{
-        state.tempMaxPrice=value;
+    setTempMax: (state, value) => {
+      state.tempMaxPrice = value;
     },
-    setPriceMin:(state,value)=>{
-        state.params['price[min]']=value;
+    setPriceMin: (state, value) => {
+      state.params['price[min]'] = value;
     },
-    setPriceMax:(state,value)=>{
-        state.params['price[max]']=value;
+    setPriceMax: (state, value) => {
+      state.params['price[max]'] = value;
     },
-    setSortCode(state,value){
-        state.params.sort=value;
+    setSortCode(state, value) {
+      state.params.sort = value;
+    },
+    setSearchQuery(state,searchKey){
+        state.query=searchKey;
     }
+
   },
 });
 

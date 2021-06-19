@@ -56,7 +56,7 @@ export default {
         return this.$store.getters.getParams.sort;
       },
       set(code){
-        this.$store.commit('setSortCode',code)
+        this.$store.commit('setSortCode',code);
       }
     }
   },
