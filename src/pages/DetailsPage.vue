@@ -1,15 +1,15 @@
 <template>
     <div class="product-container">
-        <product--detailed-card v-if="product" :product="product"/>
+        <product-card v-if="product" :product="product" />
     </div>
 </template>
 <style lang="scss" scoped>
     .product-container{
         display: flex;
         justify-content: center;
-        align-items: stretch;
-        height: 70vh;
-        margin-top: 10vh;
+        align-items: center;
+        // height: 70vh;
+        margin-top: 30vh;
         cursor: default;
     }
 </style>
