@@ -25,7 +25,6 @@ import DialogBox from '@/components/dialog-box.vue';
 import multiSelect from '../components/multiSelect.vue';
 
 import { searchWatcher } from '@/main';
-// import {PLP} from '@/api/apis.js';
 
 export default {
   created() {
@@ -35,7 +34,6 @@ export default {
     });
     this.fetchData();
   },
-
   data() {
     return {
       dialog: {
@@ -44,14 +42,21 @@ export default {
       },
     };
   },
-  computed:{
-    loader(){
+  watch: {
+    '$store.state.params.sort'() {
+      setTimeout(() => {
+        this.dialog.show = false;
+      }, 400);
+    },
+  },
+  computed: {
+    loader() {
       return this.$store.state.loader;
-    }
+    },
   },
   methods: {
     async fetchData() {
-      this.$store.dispatch('getProduct')
+      this.$store.dispatch('getProduct');
     },
   },
   components: {
