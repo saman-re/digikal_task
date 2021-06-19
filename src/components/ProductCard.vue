@@ -1,5 +1,5 @@
 <template>
-  <div class="product-card">
+  <div class="product-card" @click="send(product)">
     <div class="main-images">
       <img :src="product.images.main" :alt="product.title" />
     </div>
@@ -41,6 +41,10 @@ export default {
     };
   },
   methods: {
+    send(product){
+      console.log(product);
+      this.$router.push(`/details/?ID=${product.id}`)
+    },
     offCalc() {
       let offPercent = 100 - (this.selling / this.rrp) * 100;
       return Math.round(offPercent);

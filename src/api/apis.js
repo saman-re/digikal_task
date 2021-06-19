@@ -6,3 +6,8 @@ export const PLP=async(params) => {
     });
     return data;
 }
+
+export const PDP=async(ID) =>{
+    let data = await Axios.get(`product/${ID}/`)
+    return data;
+}

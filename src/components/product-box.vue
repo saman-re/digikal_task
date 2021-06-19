@@ -1,7 +1,7 @@
 <template>
   <div class="product-box">
     <sort-bar class="product-sortbar" />
-    <product-card v-for="(product, index) in products" :key="index" :product="product" @click="send(product)"></product-card>
+    <product-card v-for="(product, index) in products" :key="index" :product="product"></product-card>
     <pagination class="product-pagination"></pagination>
   </div>
 </template>
@@ -14,12 +14,6 @@ export default {
   computed:{
     products(){
       return this.$store.state.products;
-    }
-  },
-  methods:{
-    send(product){
-      console.log(product);
-      this.$router.push(`/details/`)
     }
   },
   components: {
