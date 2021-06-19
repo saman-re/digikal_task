@@ -2,11 +2,11 @@
   <div class="sort-option-items">
     <div class="filter" @click="dialogActivate('range')">
       <i class="material-icons">tune</i>
-      <span>جستجوی پیشرفته:</span>
+      <span>جستجوی پیشرفته</span>
     </div>
     <div class="filter" @click="dialogActivate('select')">
       <i class="material-icons">sort</i>
-      <span>مرتب سازی بر اساس:</span>
+      <span>{{getSortOption()}}</span>
     </div>
     <div class="sort-option-guide">
       <i class="material-icons">sort</i>
@@ -62,9 +62,16 @@ export default {
     }
   },
   methods: {
+    getSortOption(){
+      let code=this.sortOption;
+      let txt=this.sortOptions.filter(el=>{
+          return el.code == code;
+      })
+      console.log(txt);
+      return txt[0].text;
+    },
     sortActive(code) {
       this.sortOption = code;
-      // searchWatcher.$emit('sortOption', code);
     },
     dialogActivate(slotName){
       searchWatcher.$emit('setSlot',slotName)
