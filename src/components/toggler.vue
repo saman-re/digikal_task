@@ -9,7 +9,7 @@ export default {
   computed:{ 
     toggleMode:{
       get(){
-        return this.$store.getters.getParams.has_selling_stock;
+        return this.$store.state.hasSellingStock;
       },
       set(value){
         this.$store.commit('toggle',value);

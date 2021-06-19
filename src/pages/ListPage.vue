@@ -12,7 +12,7 @@
       <price-range-box @setRange="setPrice($event)" />
       <toggle-box />
     </div>
-    <product-box class="product-box" :products="products" :totalPages="totalPage" style="margin-top: 40px; margin-bottom: 40px" />
+    <product-box class="product-box" style="margin-top: 40px; margin-bottom: 40px" />
   </div>
 </template>
 
@@ -25,35 +25,28 @@ import DialogBox from '@/components/dialog-box.vue';
 import multiSelect from '../components/multiSelect.vue';
 
 import { searchWatcher } from '@/main';
-import Axios from '@/api/axios_config';
+// import {PLP} from '@/api/apis.js';
 
 export default {
   created() {
-    searchWatcher.$on('getSortCode', () => {
-      searchWatcher.$emit('getDefault', this.params.sortCode);
-    });
-    searchWatcher.$on('getToggleMode',()=>{
-      searchWatcher.$emit('setDefaultToggle',this.params.sellingStock);
-    })
     searchWatcher.$on('setSlot', slotName => {
       this.dialog.slot = slotName;
       this.dialog.show = true;
     });
-    searchWatcher.$on('re-search', () => {
-      this.fetchData();
-    });
-    searchWatcher.$on('toggle', sellingStock => {
-      this.params.hasSellingStock = sellingStock;
-    });
-    searchWatcher.$on('sortOption', sortCod => {
-      this.params.sortCode = sortCod;
-    });
-    if (this.$route.query.search) {
-      this.params.query = this.$route.query.search;
-    }
-    if (this.$route.query.page) {
-      this.params.currentPage = this.$route.query.page;
-    }
+    // searchWatcher.$on('re-search', () => {
+    //   this.fetchData();
+    // });
+    // if (this.$route.query.search) {
+    //   this.params.query = this.$route.query.search;
+    // }
+    // if (this.$route.query.page) {
+    //   this.params.currentPage = this.$route.query.page;
+    // }if (this.$route.query.search) {
+    //   this.params.query = this.$route.query.search;
+    // }
+    // if (this.$route.query.page) {
+    //   this.params.currentPage = this.$route.query.page;
+    // }
     this.fetchData();
   },
 
@@ -63,84 +56,16 @@ export default {
         slot: '',
         show: false,
       },
-      loader: false,
-      products: [],
-      totalPage: 1,
-      params: {
-        sortCode: 4,
-        hasSellingStock: false,
-        currentPage: 1,
-        minPrice: 0,
-        maxPrice: 100000,
-        query: '',
-      },
     };
   },
-  watch: {
-    '$route.query'(newRoute) {
-      this.params.currentPage = this.$route.query.page;
-      if (newRoute.search) {
-        this.params.query = this.$route.query.search;
-      }
-      this.fetchData();
-    },
-    'params.sortCode'() {
-      setTimeout(() => {
-        this.dialog.show = false;
-      }, 500);
-      searchWatcher.$emit('getDefault', this.params.sortCode);
-      this.fetchData();
-    },
-    'params.hasSellingStock'() {
-      setTimeout(() => {
-        this.dialog.show = false;
-      }, 500);
-      this.fetchData();
-    },
-    'params.currentPage'() {
-      this.fetchData();
-    },
-    'params.minPrice'() {
-      setTimeout(() => {
-        this.dialog.show = false;
-      }, 500);
-      this.fetchData();
-    },
-    'params.maxPrice'() {
-      setTimeout(() => {
-        this.dialog.show = false;
-      }, 500);
-      this.fetchData();
-    },
+  computed:{
+    loader(){
+      return this.$store.state.loader;
+    }
   },
   methods: {
-    setPrice(key) {
-      this.params.minPrice = key[0];
-      this.params.maxPrice = key[1];
-    },
     async fetchData() {
-      this.loader = true;
-      let params = {
-        page: this.params.currentPage,
-        rows: 21,
-        sort:this.params.sortCode,
-        'price[min]': this.params.minPrice,
-        'price[max]': this.params.maxPrice,
-      };
-      if (this.params.query) {
-        params.q = this.params.query;
-      }
-      if (this.params.hasSellingStock) {
-        params.has_selling_stock = 1;
-      }
-
-      let data = await Axios.get('search/', {
-        params,
-      });
-      this.loader = false;
-      data = data.data.data;
-      this.products = data.products;
-      this.totalPage = data.pager.total_pages;
+      this.$store.dispatch('getProduct')
     },
   },
   components: {

@@ -11,7 +11,12 @@ import productCard from './ProductCard.vue';
 import SortBar from './SortBar.vue';
 import Pagination from './pagination.vue';
 export default {
-  props: ['products'],
+  // props: ['products'],
+  computed:{
+    products(){
+      return this.$store.state.products;
+    }
+  },
   methods:{
     send(product){
       console.log(product);
