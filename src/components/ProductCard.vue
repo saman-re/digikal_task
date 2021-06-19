@@ -1,5 +1,5 @@
 <template>
-  <div class="product-card" @click="send(product)">
+  <div :class="{ 'single-product': $route.name == 'product_page' }" class="product-card" @click="send(product)">
     <div class="main-images">
       <img :src="product.images.main" :alt="product.title" />
     </div>
@@ -8,7 +8,7 @@
         <span class="product-name">{{ product.title }}</span>
         <div class="stars">
           <span class="count">({{ toPersianDigits(product.rating.count) }})</span>
-          <span class="rating">{{ toPersianDigits(product.rating.rate) }}</span>
+          <span class="rating">{{ toPersianDigits((product.rating.rate / 20).toFixed(1)) }}</span>
           <i class="material-icons">star_rate</i>
         </div>
       </div>
@@ -41,9 +41,10 @@ export default {
     };
   },
   methods: {
-    send(product){
-      console.log(product);
-      this.$router.push(`/details/?ID=${product.id}`)
+    send(product) {
+      if (this.$route.name == 'home_page') {
+        this.$router.push(`/details/?ID=${product.id}`);
+      }
     },
     offCalc() {
       let offPercent = 100 - (this.selling / this.rrp) * 100;
@@ -69,6 +70,11 @@ export default {
 .product-card {
   display: -webkit-box;
   display: -ms-flexbox;
+  -webkit-box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+  box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+  transition: box-shadow 0.3 ease-out;
+  cursor: pointer;
+  z-index: 11;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -282,13 +288,13 @@ export default {
   right: 17px;
   text-align: center;
   @media (max-width: 768px) {
-      left: 90px;
-      margin:-30px;
-    }
-    @media (max-width: 576px) {
-      right:20px;
-      left:90px;
-    }
+    left: 90px;
+    margin: -30px;
+  }
+  @media (max-width: 576px) {
+    right: 20px;
+    left: 90px;
+  }
 }
 
 .out-of-stock_text {
@@ -307,13 +313,19 @@ export default {
   color: #969696;
 
   @media (max-width: 768px) {
-      font-size: 15px;
-    }
+    font-size: 15px;
+  }
 
   @media (max-width: 576px) {
-      margin:0 -22px;
-      padding: 1px 8px;
-      font-size: 14px;
-    }
+    margin: 0 -22px;
+    padding: 1px 8px;
+    font-size: 14px;
+  }
+}
+.single-product {
+  -webkit-box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+  box-shadow: 0 2px 17px 0 rgba($color: #000000, $alpha: 0.3);
+  cursor: none;
+  z-index: 11;
 }
 </style>

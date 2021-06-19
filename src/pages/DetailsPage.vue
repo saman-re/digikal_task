@@ -7,8 +7,8 @@
     .product-container{
         display: flex;
         justify-content: center;
-        align-items: center;
-        margin-top: 30vh;
+        // align-items: center;
+        transform: translateY(+20%);
         cursor: default;
     }
 </style>
