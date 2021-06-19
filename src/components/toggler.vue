@@ -2,27 +2,21 @@
   <div class="toggler">
     <input type="checkbox" id="switch" @change="toggle" v-model="toggleMode" />
     <label for="switch">Toggle</label>
+    <p>{{toggleMode}}</p>
   </div>
 </template>
 <script>
-import { searchWatcher } from '../main';
 export default {
-  created(){
-    searchWatcher.$emit('getToggleMode');
-    searchWatcher.$on('setDefaultToggle',(mode)=>{
-      this.toggleMode=mode;
-    });
-  },
-  data() {
-    return {
-      toggleMode: false,
-    };
-  },
-  methods: {
-    toggle() {
-      searchWatcher.$emit('toggle', this.toggleMode);
-    },
-  },
+  computed:{
+    toggleMode:{
+      get(){
+        return this.$store.getters.getParams.hasSellingStock;
+      },
+      set(value){
+        this.$store.commit('toggle',value);
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
