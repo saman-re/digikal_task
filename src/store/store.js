@@ -7,12 +7,14 @@ export const store = new Vuex.Store({
   state: {
     params: {
       sortCode: 4,
-      hasSellingStock: false,
-      currentPage: 1,
-      minPrice: 0,
-      maxPrice: 100000,
+      has_selling_stock: false,
+      page: 2,
+      rows: 21,
+      'price[min]': 0,
+      'price[max]': 100000,
       query: '',
     },
+    totalPages:10,
   },
   getters: {
     getParams: state => {
@@ -21,7 +23,10 @@ export const store = new Vuex.Store({
   },
   mutations: {
     toggle: (state, payload) => {
-      state.params.hasSellingStock = payload;
+      state.params.has_selling_stock = payload;
+    },
+    changePage: (state, newPage) => {
+      state.params.page =newPage;
     },
   },
 });

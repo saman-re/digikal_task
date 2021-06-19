@@ -2,12 +2,11 @@
   <div class="toggler">
     <input type="checkbox" id="switch" @change="toggle" v-model="toggleMode" />
     <label for="switch">Toggle</label>
-    <p>{{toggleMode}}</p>
   </div>
 </template>
 <script>
 export default {
-  computed:{
+  computed:{ 
     toggleMode:{
       get(){
         return this.$store.getters.getParams.hasSellingStock;

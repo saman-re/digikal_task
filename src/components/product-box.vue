@@ -2,7 +2,7 @@
   <div class="product-box">
     <sort-bar class="product-sortbar" />
     <product-card v-for="(product, index) in products" :key="index" :product="product" @click="send(product)"></product-card>
-    <pagination class="product-pagination" :totalPages="totalPages"></pagination>
+    <pagination class="product-pagination"></pagination>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import productCard from './ProductCard.vue';
 import SortBar from './SortBar.vue';
 import Pagination from './pagination.vue';
 export default {
-  props: ['products', 'totalPages'],
+  props: ['products'],
   methods:{
     send(product){
       console.log(product);

@@ -21,25 +21,13 @@
 
 <script>
 export default {
-  props: ['totalPages'],
-  created(){
-    if(this.$route.query.page){
-    this.currentPage = this.$route.query.page;
-    }
+  created() {
+    this.newPage(this.currentPage);
   },
   data() {
     return {
-      currentPage: 1,
       pagesArray: [1],
     };
-  },
-  watch: {
-    totalPages(newValue) {
-      this.pagesArray = [];
-      for (let i = 1; i <= 3 && i <= newValue; i++) {
-        this.pagesArray.push(i);
-      }
-    },
   },
   methods: {
     // toPersianDigits(item) {
@@ -48,42 +36,65 @@ export default {
     //   return str.replace(/[0-9]/g, w => id[+w]);
     // },
     newPage(newPage) {
-      let lastPage = this.currentPage;
-      this.currentPage = newPage;
-      this.$emit('getPage', this.currentPage);
-      let index = this.pagesArray.indexOf(newPage);
-      if (index == 0) {
-        this.pagesArray.pop();
-        if (newPage > 1) {
-          this.pagesArray.unshift(newPage - 1);
-        }
-      } else if (index == 2 && newPage != this.totalPages) {
-        this.pagesArray.shift();
-        if (newPage < this.totalPages) {
-          this.pagesArray.push(newPage + 1);
-        }
-      }
-      if (newPage == 1) {
-        this.pagesArray = [];
-        for (let i = 1; i <= 3 && i <= this.totalPages; i++) {
-          this.pagesArray.push(i);
-        }
-      } else if (newPage == this.totalPages) {
-        this.pagesArray = [];
-        for (let i = 0; i < 3 && i < this.totalPages - 1; i++) {
-          this.pagesArray.unshift(this.totalPages - i);
-        }
-      }
-      if (newPage != lastPage) {
-        this.$router.push({
-          query: {
-            search: this.$route.query.search,
-            page: newPage,
-          },
-        });
+      this.pagesArray = [];
+      this.currentPage=newPage;
+      let start = newPage - 2;
+      start = start < 1 ? 1 : start;
+      for (let i = 0; i < 5 && start+i <= this.totalPages; i++) {
+        this.pagesArray.push(start + i);
       }
     },
   },
+  computed:{
+    totalPages(){
+      return this.$store.state.totalPages;
+    },
+    currentPage:{
+      get(){
+        return this.$store.getters.getParams.page;
+      },
+      set(newPage){
+      this.$store.commit('changePage',newPage);
+      }
+    }
+  }
+    // newPage(newPage) {
+    //   let lastPage = this.currentPage;
+    //   this.currentPage = newPage;
+    //   this.$emit('getPage', this.currentPage);
+    //   let index = this.pagesArray.indexOf(newPage);
+    //   if (index == 0) {
+    //     this.pagesArray.pop();
+    //     if (newPage > 1) {
+    //       this.pagesArray.unshift(newPage - 1);
+    //     }
+    //   } else if (index == 2 && newPage != this.totalPages) {
+    //     this.pagesArray.shift();
+    //     if (newPage < this.totalPages) {
+    //       this.pagesArray.push(newPage + 1);
+    //     }
+    //   }
+    //   if (newPage == 1) {
+    //     this.pagesArray = [];
+    //     for (let i = 1; i <= 3 && i <= this.totalPages; i++) {
+    //       this.pagesArray.push(i);
+    //     }
+    //   } else if (newPage == this.totalPages) {
+    //     this.pagesArray = [];
+    //     for (let i = 0; i < 3 && i < this.totalPages - 1; i++) {
+    //       this.pagesArray.unshift(this.totalPages - i);
+    //     }
+    //   }
+    //   if (newPage != lastPage) {
+    //     this.$router.push({
+    //       query: {
+    //         search: this.$route.query.search,
+    //         page: newPage,
+    //       },
+    //     });
+      // }
+    // },
+  // },
 };
 </script>
 
