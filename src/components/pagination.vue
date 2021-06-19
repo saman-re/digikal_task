@@ -55,6 +55,7 @@ export default {
       },
       set(newPage){
       this.$store.commit('changePage',newPage);
+      this.$store.dispatch('getProduct');
       }
     }
   }

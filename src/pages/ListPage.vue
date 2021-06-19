@@ -33,20 +33,6 @@ export default {
       this.dialog.slot = slotName;
       this.dialog.show = true;
     });
-    // searchWatcher.$on('re-search', () => {
-    //   this.fetchData();
-    // });
-    // if (this.$route.query.search) {
-    //   this.params.query = this.$route.query.search;
-    // }
-    // if (this.$route.query.page) {
-    //   this.params.currentPage = this.$route.query.page;
-    // }if (this.$route.query.search) {
-    //   this.params.query = this.$route.query.search;
-    // }
-    // if (this.$route.query.page) {
-    //   this.params.currentPage = this.$route.query.page;
-    // }
     this.fetchData();
   },
 

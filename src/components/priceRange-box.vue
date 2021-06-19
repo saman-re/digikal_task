@@ -65,6 +65,7 @@ export default {
     setRange() {
       this.lastMin = this.minPrice;
       this.lastMax = this.maxPrice;
+      this.$store.dispatch('getProduct');
     },
     toPersianDigits(item) {
       let str = item.toString();

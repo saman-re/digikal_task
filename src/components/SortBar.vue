@@ -57,6 +57,7 @@ export default {
       },
       set(code){
         this.$store.commit('setSortCode',code);
+        this.$store.dispatch('getProduct');
       }
     }
   },

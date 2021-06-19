@@ -23,17 +23,7 @@ export default {
   methods: {
     search() {
       if (this.searchKey != '') {
-        // if (this.$route.query.search !== this.searchKey) {
-        //   this.$router.push({
-        //     name: 'home_page',
-        //     query: {
-        //       search: this.searchKey,
-        //       page:this.$route.query.page,
-        //     },
-        //   });
-        // }else{
-        //   searchWatcher.$emit('re-search', "");
-        // }
+        this.$store.dispatch('getProduct');
       }
     },
   },

@@ -13,6 +13,7 @@ export default {
       },
       set(value){
         this.$store.commit('toggle',value);
+        this.$store.dispatch('getProduct');
       }
     }
   }
