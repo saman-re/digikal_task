@@ -1,6 +1,6 @@
 <template>
   <div class="toggler">
-    <input type="checkbox" id="switch" @change="toggle" v-model="toggleMode" />
+    <input type="checkbox" id="switch" v-model="toggleMode" />
     <label for="switch">Toggle</label>
   </div>
 </template>
@@ -9,7 +9,7 @@ export default {
   computed:{ 
     toggleMode:{
       get(){
-        return this.$store.getters.getParams.hasSellingStock;
+        return this.$store.getters.getParams.has_selling_stock;
       },
       set(value){
         this.$store.commit('toggle',value);

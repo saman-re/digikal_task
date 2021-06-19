@@ -20,6 +20,8 @@
 <script>
 export default {
   created() {
+    this.rightValue=this.$store.getters.getParams["price[max]"];
+    this.leftValue=this.$store.getters.getParams["price[min]"];
     this.setLeftValue();
     this.setRightValue();
   },

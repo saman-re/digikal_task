@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     params: {
-      sortCode: 4,
+      sort: 4,
       has_selling_stock: false,
       page: 2,
       rows: 21,
@@ -15,6 +15,8 @@ export const store = new Vuex.Store({
       query: '',
     },
     totalPages:10,
+    tempMinPrice:0,
+    tempMaxPrice:100000
   },
   getters: {
     getParams: state => {
@@ -28,6 +30,21 @@ export const store = new Vuex.Store({
     changePage: (state, newPage) => {
       state.params.page =newPage;
     },
+    setTempMin:(state,value) =>{
+        state.tempMinPrice=value;
+    },
+    setTempMax:(state,value) =>{
+        state.tempMaxPrice=value;
+    },
+    setPriceMin:(state,value)=>{
+        state.params['price[min]']=value;
+    },
+    setPriceMax:(state,value)=>{
+        state.params['price[max]']=value;
+    },
+    setSortCode(state,value){
+        state.params.sort=value;
+    }
   },
 });
 
